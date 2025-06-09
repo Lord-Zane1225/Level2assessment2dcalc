@@ -66,6 +66,7 @@ def num_check(question, num_type, exit_code=None):
 def shape_calc():
     """Gets a shape from the user and finds either the area or perimeter of that shape. """
     while True:
+        is_rounded = ""
         # ask user for shape
         shape_type_chosen = string_check("Please enter what shape you would like: ", shape_tuple, 4)
 
@@ -86,12 +87,31 @@ def shape_calc():
                 if shape_type_chosen == "rectangle":
                     second_side = num_check("Please enter the length of the other side", "float")
 
-            elif shape_type_chosen == "circle":
-                circle_radius = num_check("Please enter the radius (distance between middle of circle to the edge): ", "float", )
-                if want_perimeter_area == "perimeter":
-                    perimeter = (math.pi * 2) * circle_radius
+                # otherwise, make second side same as first
+                else:
+                    second_side = first_side
 
+                if want_perimeter_area == "perimeter":
+                    perimeter = (first_side * 2) + (second_side * 2)
                     return want_perimeter_area, shape_type_chosen, perimeter
+
+            # circle finder
+            elif shape_type_chosen == "circle":
+                circle_radius = num_check("Please enter the radius (distance between the middle of circle to the edge): ", "float", )
+                if want_perimeter_area == "perimeter":
+
+                    # find perimeter amd round to 2dp
+                    perimeter_unrounded = (math.pi * 2) * circle_radius
+                    perimeter = round(perimeter_unrounded, 2)
+                    is_rounded = " (rounded to 2 decimal points)"
+
+                    return want_perimeter_area, shape_type_chosen, perimeter, is_rounded
+
+            # triangle finder
+            else:
+                # find triangle type
+                print("hello world")
+
 
 
 
@@ -103,4 +123,4 @@ perimeter_area_tuple = ("perimeter", "area")
 
 
 user_answer = shape_calc()
-print(f"The {user_answer[0]} of your {user_answer[1]} is {user_answer[2]}")
+print(f"The {user_answer[0]} of your {user_answer[1]} is {user_answer[2]}{user_answer[3]}. ")
