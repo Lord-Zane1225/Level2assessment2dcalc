@@ -1,4 +1,6 @@
+import math
 # functions
+
 
 def not_blank(question):
     """Checks that a user response is not blank"""
@@ -12,7 +14,7 @@ def not_blank(question):
         print("Sorry, this can't be blank. Please try again. \n")
 
 
-def string_check(question, valid_ans_list):
+def string_check(question, valid_ans_list, num_of_ans):
     """Checks that users enter the full world or the first letter of a word from a list of valid responses. """
 
     while True:
@@ -26,7 +28,11 @@ def string_check(question, valid_ans_list):
             elif response == item[0]:
                 return item
 
-        print(f"Please choose an answer from {valid_ans_list}. ")
+        if num_of_ans == 2:
+            print(f"Please choose either {valid_ans_list[0]} or {valid_ans_list[1]}. ")
+
+        elif num_of_ans == 4:
+            print(f"Please choose one of {valid_ans_list[0]}, {valid_ans_list[1]}, {valid_ans_list[2]} or {valid_ans_list[3]}. ")
 
 
 def num_check(question, num_type, exit_code=None):
@@ -59,8 +65,42 @@ def num_check(question, num_type, exit_code=None):
 
 def shape_calc():
     """Gets a shape from the user and finds either the area or perimeter of that shape. """
-    string_check("Please enter what shape you would like: ", shape_tuple)
+    while True:
+        # ask user for shape
+        shape_type_chosen = string_check("Please enter what shape you would like: ", shape_tuple, 4)
+
+        # give option to pick a different shape
+        correct_shape_ques = string_check(f"You have chosen {shape_type_chosen}. Is this correct? ", yes_no_tuple, 2)
+
+        # if yes, program continues
+        if correct_shape_ques == "yes":
+            # ask if user wants perimeter or area
+            want_perimeter_area = string_check("Do you want the perimeter or the area? ", perimeter_area_tuple, 2)
+
+            # find perimeter / area of square or rectangle
+            if shape_type_chosen == "square" or shape_type_chosen == "rectangle":
+
+                first_side = num_check("Please enter the length of a side", "float")
+
+                # if rectangle, ask for another side
+                if shape_type_chosen == "rectangle":
+                    second_side = num_check("Please enter the length of the other side", "float")
+
+            elif shape_type_chosen == "circle":
+                circle_radius = num_check("Please enter the radius (distance between middle of circle to the edge): ", "float", )
+                if want_perimeter_area == "perimeter":
+                    perimeter = (math.pi * 2) * circle_radius
+
+                    return want_perimeter_area, shape_type_chosen, perimeter
+
+
 
 
 # main routine
+yes_no_tuple = ("yes", "no")
 shape_tuple = ("square", "rectangle", "triangle", "circle")
+perimeter_area_tuple = ("perimeter", "area")
+
+
+user_answer = shape_calc()
+print(f"The {user_answer[0]} of your {user_answer[1]} is {user_answer[2]}")
