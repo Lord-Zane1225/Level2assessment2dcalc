@@ -71,7 +71,11 @@ def shape_calc():
         shape_type_chosen = string_check("Please enter what shape you would like: ", shape_tuple, 4)
 
         # give option to pick a different shape
-        correct_shape_ques = string_check(f"You have chosen {shape_type_chosen}. Is this correct? ", yes_no_tuple, 2)
+        if shape_type_chosen == "triangle":
+            correct_shape_ques = string_check(f"You have chosen a triangle, which can only be equilateral. Is this correct? ", yes_no_tuple, 2)
+        else:
+            correct_shape_ques = string_check(f"You have chosen {shape_type_chosen}. Is this correct? ", yes_no_tuple,
+                                              2)
 
         # if yes, program continues
         if correct_shape_ques == "yes":
@@ -93,24 +97,35 @@ def shape_calc():
 
                 if want_perimeter_area == "perimeter":
                     perimeter = (first_side * 2) + (second_side * 2)
-                    return want_perimeter_area, shape_type_chosen, perimeter
+                    return want_perimeter_area, shape_type_chosen, perimeter, is_rounded
+                else:
+                    area = first_side * second_side
+                    return want_perimeter_area, shape_type_chosen, area, is_rounded
 
             # circle finder
             elif shape_type_chosen == "circle":
                 circle_radius = num_check("Please enter the radius (distance between the middle of circle to the edge): ", "float", )
                 if want_perimeter_area == "perimeter":
 
-                    # find perimeter amd round to 2dp
+                    # find perimeter and round to 2dp
                     perimeter_unrounded = (math.pi * 2) * circle_radius
                     perimeter = round(perimeter_unrounded, 2)
                     is_rounded = " (rounded to 2 decimal points)"
 
                     return want_perimeter_area, shape_type_chosen, perimeter, is_rounded
+                else:
+
+                    # find area and round to 2dp
+                    unrounded_area = circle_radius * (math.pi * math.pi)
+                    area = round(unrounded_area, 2)
+                    is_rounded = " (rounded to 2 decimal points)"
+                    return want_perimeter_area, shape_type_chosen, area, is_rounded
 
             # triangle finder
             else:
-                # find triangle type
-                print("hello world")
+                triangle_height = ""
+
+
 
 
 
@@ -121,6 +136,7 @@ yes_no_tuple = ("yes", "no")
 shape_tuple = ("square", "rectangle", "triangle", "circle")
 perimeter_area_tuple = ("perimeter", "area")
 
-
-user_answer = shape_calc()
-print(f"The {user_answer[0]} of your {user_answer[1]} is {user_answer[2]}{user_answer[3]}. ")
+# loop for testing purposes
+while True:
+    user_answer = shape_calc()
+    print(f"The {user_answer[0]} of your {user_answer[1]} is {user_answer[2]}{user_answer[3]}. ")
