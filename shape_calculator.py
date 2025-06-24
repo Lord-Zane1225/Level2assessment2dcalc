@@ -35,14 +35,10 @@ def string_check(question, valid_ans_list, num_of_ans):
             print(f"Please choose one of {valid_ans_list[0]}, {valid_ans_list[1]}, {valid_ans_list[2]} or {valid_ans_list[3]}. ")
 
 
-def num_check(question, num_type, exit_code=None):
-    """Checks that users enter an integer / float more than 0 (or optional exit code)"""
-    if num_type == "integer":
-        error = "Oops - Please enter an integer (no decimals) more than 0"
-        change_to = int
-    else:
-        error = "Oops - Please enter a number more than 0"
-        change_to = float
+def num_check(question, exit_code=None):
+    """Checks that users enter a float more than 0 (or optional exit code)"""
+
+    error = "Oops - Please enter a number more than 0"
 
     while True:
         response = input(question).lower()
@@ -52,7 +48,7 @@ def num_check(question, num_type, exit_code=None):
             return response
         try:
             # check response is an integer and is more than 0
-            response = change_to(response)
+            response = float(response)
 
             if response > 0:
                 return response
@@ -85,11 +81,11 @@ def shape_calc():
             # find perimeter / area of square or rectangle
             if shape_type_chosen == "square" or shape_type_chosen == "rectangle":
 
-                first_side = num_check("Please enter the length of a side", "float")
+                first_side = num_check("Please enter the length of a side")
 
                 # if rectangle, ask for another side
                 if shape_type_chosen == "rectangle":
-                    second_side = num_check("Please enter the length of the other side", "float")
+                    second_side = num_check("Please enter the length of the other side")
 
                 # otherwise, make second side same as first
                 else:
@@ -104,7 +100,7 @@ def shape_calc():
 
             # circle finder
             elif shape_type_chosen == "circle":
-                circle_radius = num_check("Please enter the radius (distance between the middle of circle to the edge): ", "float", )
+                circle_radius = num_check("Please enter the radius (distance between the middle of circle to the edge): ")
                 if want_perimeter_area == "perimeter":
 
                     # find perimeter and round to 2dp
@@ -123,8 +119,16 @@ def shape_calc():
 
             # triangle finder
             else:
-                triangle_height = ""
-
+                triangle_base = num_check("Please enter the base of the triangle (bottom side): ")
+                if want_perimeter_area == "perimeter":
+                    triangle_side_one = num_check("Please enter another side of the triangle: ")
+                    triangle_side_two = num_check("Please enter the remaining side pf the triangle: ")
+                    perimeter = triangle_base + triangle_side_one + triangle_side_two
+                    return want_perimeter_area, shape_type_chosen, perimeter, is_rounded
+                else:
+                    triangle_height = num_check("Please enter the height of the triangle: ")
+                    area = 0.5 * triangle_base * triangle_height
+                    return want_perimeter_area, shape_type_chosen, area, is_rounded
 
 
 
