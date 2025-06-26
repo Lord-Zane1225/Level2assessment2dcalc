@@ -62,10 +62,7 @@ def shape_calc():
         shape_type_chosen = string_check("Please enter what shape you would like: ", shape_tuple, 4)
 
         # give option to pick a different shape
-        if shape_type_chosen == "triangle":
-            correct_shape_ques = string_check(f"You have chosen a triangle, which can only be equilateral. Is this correct? ", yes_no_tuple, 2)
-        else:
-            correct_shape_ques = string_check(f"You have chosen {shape_type_chosen}. Is this correct? ", yes_no_tuple,
+        correct_shape_ques = string_check(f"You have chosen {shape_type_chosen}. Is this correct? ", yes_no_tuple,
                                               2)
 
         # if yes, program continues
@@ -86,48 +83,46 @@ def shape_calc():
                 else:
                     second_side = first_side
 
-                if want_perimeter_area == "perimeter":
-                    perimeter = (first_side * 2) + (second_side * 2)
-                    return want_perimeter_area, shape_type_chosen, perimeter, is_rounded
-                else:
-                    area = first_side * second_side
-                    return want_perimeter_area, shape_type_chosen, area, is_rounded
+                # find perimeter and area
+                perimeter = (first_side * 2) + (second_side * 2)
+                area = first_side * second_side
+                return want_perimeter_area, shape_type_chosen, perimeter, area, is_rounded
+
+
 
             # circle finder
             elif shape_type_chosen == "circle":
                 circle_radius = num_check("Please enter the radius (distance between the middle of circle to the edge): ", 0)
-                if want_perimeter_area == "perimeter":
 
-                    # find perimeter and round to 2dp
-                    perimeter_unrounded = (math.pi * 2) * circle_radius
-                    perimeter = round(perimeter_unrounded, 2)
-                    is_rounded = " (rounded to 2 decimal points)"
+                # find perimeter and round to 2dp
+                perimeter_unrounded = (math.pi * 2) * circle_radius
+                perimeter = round(perimeter_unrounded, 2)
 
-                    return want_perimeter_area, shape_type_chosen, perimeter, is_rounded
-                else:
-
-                    # find area and round to 2dp
-                    unrounded_area = circle_radius * (math.pi * math.pi)
-                    area = round(unrounded_area, 2)
-                    is_rounded = " (rounded to 2 decimal points)"
-                    return want_perimeter_area, shape_type_chosen, area, is_rounded
+                # find area and round to 2dp
+                unrounded_area = circle_radius * (math.pi * math.pi)
+                area = round(unrounded_area, 2)
+                is_rounded = " (rounded to 2 decimal points)"
+                # return results
+                return want_perimeter_area, shape_type_chosen, perimeter, area, is_rounded
 
             # triangle finder
             else:
-                triangle_base = num_check("Please enter the base of the triangle (bottom side): ", 0)
-                if want_perimeter_area == "perimeter":
-                    triangle_side_one = num_check("Please enter another side of the triangle: ", 0)
-                    triangle_side_two = num_check("Please enter the remaining side pf the triangle: ", 0)
-                    perimeter = triangle_base + triangle_side_one + triangle_side_two
-                    return want_perimeter_area, shape_type_chosen, perimeter, is_rounded
-                else:
+                if want_perimeter_area == "area":
+                    # ask user for the height if they want area
                     triangle_height = num_check("Please enter the height of the triangle: ", 0)
+                else:
+                    triangle_height = ""
+
+                triangle_base = num_check("Please enter the base of the triangle (bottom side): ", 0)
+
+                triangle_side_one = num_check("Please enter another side of the triangle: ", 0)
+                triangle_side_two = num_check("Please enter the remaining side pf the triangle: ", 0)
+                perimeter = triangle_base + triangle_side_one + triangle_side_two
+                if triangle_height == "":
+                    area = "N/A"
+                else:
                     area = 0.5 * triangle_base * triangle_height
-                    return want_perimeter_area, shape_type_chosen, area, is_rounded
-
-
-
-
+                return want_perimeter_area, shape_type_chosen, perimeter, area, is_rounded
 
 
 # main routine
@@ -138,4 +133,7 @@ perimeter_area_tuple = ("perimeter", "area")
 # loop for testing purposes
 while True:
     user_answer = shape_calc()
-    print(f"The {user_answer[0]} of your {user_answer[1]} is {user_answer[2]}{user_answer[3]}. ")
+    if user_answer[1] == "perimeter":
+        print(f"The {user_answer[0]} of your {user_answer[1]} is {user_answer[2]}{user_answer[4]} (area is {user_answer[3]}).")
+    else:
+        print(f"The {user_answer[0]} of your {user_answer[1]} is {user_answer[3]}{user_answer[4]} (perimeter is {user_answer[2]}).")
