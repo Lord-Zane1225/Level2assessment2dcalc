@@ -1,5 +1,17 @@
 import math
+import pandas
+
+from Assessment.shape_calculator import user_answer
+
+
 # functions
+
+
+def make_statement(statement, decoration):
+    """Emphasises headings by adding decorations
+    at the start and end"""
+
+    return f"{decoration * 3} {statement} {decoration * 3}"
 
 
 def not_blank(question):
@@ -60,10 +72,11 @@ def shape_calc():
     """Gets a shape from the user and finds either the area or perimeter of that shape. """
     while True:
         is_rounded = ""
+
         # ask user for shape
         shape_type_chosen = string_check("Please enter what shape you would like: ", shape_tuple, 4)
 
-        # give option to pick a different shape
+        # give option to pick a different shape (error prevention)
         correct_shape_ques = string_check(f"You have chosen {shape_type_chosen}. Is this correct? ", yes_no_tuple, 2)
 
         # if yes, program continues
@@ -89,6 +102,7 @@ def shape_calc():
                     perimeter = (first_side * 2) + (second_side * 2)
                     area = first_side * second_side
                     return want_perimeter_area, shape_type_chosen, perimeter, area, is_rounded
+                # tell user that they have not given enough information for this calculation
                 except ValueError:
                     print("You have not given enough information to calculate either the perimeter or area. Please try again.")
                     return "fail"
@@ -138,19 +152,60 @@ def shape_calc():
                     return "fail"
 
 
+def instructions():
+    print(make_statement("Instructions", "ℹ️"))
+
+    print('''
+
+Placeholder Instructions:
+
+    ''')
+
+
 # main routine
+# tuples for different options
 yes_no_tuple = ("yes", "no")
 shape_tuple = ("square", "rectangle", "triangle", "circle")
 perimeter_area_tuple = ("perimeter", "area")
 
-# loop for testing purposes
-print("if you do not have the number for one of the entries, please input <x>")
+# pandas lists
+all_names = []
+all_sides = []
+all_areas = []
+all_perimeters = []
+
+# dictionary
+shapes_dict = {
+    'Name': all_names,
+    'Shape Features': all_sides,
+    'Area': all_areas,
+    'Perimeter': all_perimeters,
+}
+
+# main heading
+print(make_statement("2D Shape Perimeter Area Calculator", "--"))
+print()
+
+# ask user if they want to see the instructions
+want_instructions = string_check("Would you like to read the instructions? ", yes_no_tuple, 2)
+if want_instructions == "yes":
+    instructions()
+print()
+
+# loop so user can enter as many shapes as they wish
 while True:
+    # get name of shape
+    name = not_blank("Please enter the question name / something to identify your shape by: ")
+    if name == "complete":
+        break
+
+    # get the perimeter / area of the shapes
     user_answer = shape_calc()
-    # if failed, print nothing and restart loop
-    if user_answer[0] == "area":
-        print(f"The area of your {user_answer[1]} is {user_answer[3]}{user_answer[4]} (perimeter is {user_answer[2]}).")
-    elif user_answer[0] == "perimeter":
-        print(f"The perimeter of your {user_answer[1]} is {user_answer[2]}{user_answer[4]} (area is {user_answer[3]}).")
-    else:
+    if user_answer == "fail":
         continue
+
+
+
+
+
+
