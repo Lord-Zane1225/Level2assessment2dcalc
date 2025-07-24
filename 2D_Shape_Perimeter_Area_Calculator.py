@@ -117,11 +117,12 @@ def shape_calc():
             perimeter = (first_side * 2) + (second_side * 2)
             area = first_side * second_side
 
+            # append results
             all_shapes.append(shape_type_chosen)
+            all_areas.append(f"{area}{is_rounded}")
+            all_perimeters.append(f"{perimeter}{is_rounded}")
             all_wanted.append(want_perimeter_area)
-            all_sides.append(first_side and second_side)
-            all_areas.append(area and is_rounded)
-            all_perimeters.append(perimeter and is_rounded)
+            all_sides.append(f"{first_side}s1, {second_side}s2")
             return shape_type_chosen
 
         # tell user that they have not given enough information for this calculation
@@ -144,10 +145,10 @@ def shape_calc():
 
             # append results
             all_shapes.append(shape_type_chosen)
+            all_areas.append(f"{area}{is_rounded}")
+            all_perimeters.append(f"{perimeter}{is_rounded}")
             all_wanted.append(want_perimeter_area)
-            all_sides.append(circle_radius)
-            all_areas.append(area and is_rounded)
-            all_perimeters.append(perimeter and is_rounded)
+            all_sides.append(f"{circle_radius}r")
             return shape_type_chosen
 
         except ValueError:
@@ -177,10 +178,10 @@ def shape_calc():
                 area = 0.5 * triangle_base * triangle_height
             # append results
             all_shapes.append(shape_type_chosen)
+            all_areas.append(f"{area}{is_rounded}")
+            all_perimeters.append(f"{perimeter}{is_rounded}")
             all_wanted.append(want_perimeter_area)
-            all_sides.append(triangle_height and triangle_base and triangle_side_one and triangle_side_two)
-            all_areas.append(area and is_rounded)
-            all_perimeters.append(perimeter and is_rounded)
+            all_sides.append(f"{triangle_height}h, {triangle_base}s1, {triangle_side_one}s2, {triangle_side_two}s3")
             return shape_type_chosen
 
         except ValueError:
