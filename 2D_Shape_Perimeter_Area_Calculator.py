@@ -29,12 +29,12 @@ def string_check(question, valid_ans_list, num_of_ans):
 
         response = input(question).lower()
 
-        for item in valid_ans_list:
-            if response == item:
-                return item
+        for str_item in valid_ans_list:
+            if response == str_item:
+                return str_item
 
-            elif response == item[0]:
-                return item
+            elif response == str_item[0]:
+                return str_item
 
         if num_of_ans == 2:
             print(f"Please choose either {valid_ans_list[0]} or {valid_ans_list[1]} or you can enter the first letter of either. ")
@@ -168,7 +168,9 @@ def shape_calc():
         triangle_side_one = num_check("Please enter another side of the triangle: ", 0, "x")
         triangle_side_two = num_check("Please enter the remaining side of the triangle: ", 0, "x")
         try:
-            if triangle_side_one == "x" or triangle_side_two == "x":
+            if triangle_side_one == "x":
+                perimeter = "N/A"
+            elif triangle_side_two == "x":
                 perimeter = "N/A"
             else:
                 perimeter = triangle_base + triangle_side_one + triangle_side_two
@@ -198,26 +200,27 @@ perimeter_area_tuple = ("perimeter", "area")
 # pandas lists
 all_names = []
 all_shapes = []
-all_wanted = []
-all_sides = []
 all_areas = []
 all_perimeters = []
+all_wanted = []
+all_sides = []
 
 # dictionary
 shapes_dict = {
     'Name': all_names,
-    'Shapes': all_shapes,
-    'Features': all_sides,
+    'Shape': all_shapes,
     'Area': all_areas,
     'Perimeter': all_perimeters,
+    'Features': all_sides,
 }
 
 # main heading
-print(make_statement("2D Shape Perimeter Area Calculator", "--"))
+heading_string = make_statement("2D Shape Perimeter Area Calculator", "--")
+print(heading_string)
 print()
 
 # ask user if they want to see the instructions
-want_instructions = string_check("Would you like to read the instructions? ", yes_no_tuple, 2)
+want_instructions =                                                                                         string_check("Would you like to read the instructions? ", yes_no_tuple, 2)
 if want_instructions == "yes":
     instructions()
 print()
@@ -244,14 +247,20 @@ while True:
 # create dataframe / table from directory
 shapes_frame = pandas.DataFrame(shapes_dict)
 
+shape_calc_string = shapes_frame.to_string(index=False)
+
+date_string = datetime
 
 
 
 
+to_write = [heading_string, date_string, "\n",
+    shape_calc_string, "\n",]
 
-print(shapes_frame)
 
-
+print()
+for item in to_write:
+    print(item)
 
 
 
