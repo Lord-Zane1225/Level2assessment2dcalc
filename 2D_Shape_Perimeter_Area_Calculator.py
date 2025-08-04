@@ -215,8 +215,7 @@ shapes_dict = {
 }
 
 # main heading
-heading_string = make_statement("2D Shape Perimeter Area Calculator", "--")
-print(heading_string)
+print(make_statement("2D Shape Perimeter and Area Calculator", "--"))
 print()
 
 # ask user if they want to see the instructions
@@ -249,18 +248,31 @@ shapes_frame = pandas.DataFrame(shapes_dict)
 
 shape_calc_string = shapes_frame.to_string(index=False)
 
-date_string = datetime
+# get heading of results
+heading_string = make_statement("2D Shape Perimeter Area Calculator Results", "-")
 
+# get today's date
+date_string = datetime.date.today()
 
-
-
+# set up list for what should be printed and written to file
 to_write = [heading_string, date_string, "\n",
     shape_calc_string, "\n",]
 
-
+# print results
 print()
 for item in to_write:
     print(item)
 
+# create file to hold data (add txt extension)
+file_name = f"2d_shape_calc_results_{date_string}"
+write_to = "{}.txt".format(file_name)
+
+text_file = open(write_to, "w+")
+
+
+# write the items to the file
+for item in to_write:
+    text_file.write(item)
+    text_file.write("\n")
 
 
