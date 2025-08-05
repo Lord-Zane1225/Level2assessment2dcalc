@@ -53,7 +53,7 @@ def num_check(question, minimum, exit_code=None):
             return response
 
         try:
-            response = int(response)
+            response = float(response)
             # if correct return response
             if response > minimum:
                 return response
@@ -90,7 +90,7 @@ information and write the data to a dated text file.
 def shape_calc():
     """Gets a shape from the user and finds either the area or perimeter of that shape. """
 
-    is_rounded = ""
+    is_rounded = " (2dp)"
 
     # ask user for shape
     shape_type_chosen = string_check("Please enter what shape you would like: ", shape_tuple, 4)
@@ -114,19 +114,21 @@ def shape_calc():
 
         # find perimeter and area
         try:
-            perimeter = (first_side * 2) + (second_side * 2)
-            area = first_side * second_side
+            perimeter = first_side + first_side + second_side + second_side
+
+            unrounded_area = first_side * second_side
+            area = round(unrounded_area, 2)
 
             # append results
             all_shapes.append(shape_type_chosen)
             all_areas.append(f"{area}{is_rounded}")
-            all_perimeters.append(f"{perimeter}{is_rounded}")
+            all_perimeters.append(f"{perimeter}")
             all_wanted.append(want_perimeter_area)
             all_sides.append(f"{first_side}s1, {second_side}s2")
             return shape_type_chosen
 
         # tell user that they have not given enough information for this calculation
-        except ValueError:
+        except TypeError:
             print("You have not given enough information to calculate either the perimeter or area. Please try again.")
             return "fail"
 
@@ -141,7 +143,6 @@ def shape_calc():
             # find area and round to 2dp
             unrounded_area = circle_radius * (math.pi * math.pi)
             area = round(unrounded_area, 2)
-            is_rounded = " (rounded to 2 decimal points)"
 
             # append results
             all_shapes.append(shape_type_chosen)
@@ -177,11 +178,13 @@ def shape_calc():
             if triangle_height == "":
                 area = "N/A"
             else:
-                area = 0.5 * triangle_base * triangle_height
+                unrounded_area = 0.5 * triangle_base * triangle_height
+                area = round(unrounded_area, 2)
+
             # append results
             all_shapes.append(shape_type_chosen)
             all_areas.append(f"{area}{is_rounded}")
-            all_perimeters.append(f"{perimeter}{is_rounded}")
+            all_perimeters.append(f"{perimeter}")
             all_wanted.append(want_perimeter_area)
             all_sides.append(f"{triangle_height}h, {triangle_base}s1, {triangle_side_one}s2, {triangle_side_two}s3")
             return shape_type_chosen
@@ -202,8 +205,8 @@ all_names = []
 all_shapes = []
 all_areas = []
 all_perimeters = []
-all_wanted = []
 all_sides = []
+all_wanted = []
 
 # dictionary
 shapes_dict = {
@@ -212,6 +215,7 @@ shapes_dict = {
     'Area': all_areas,
     'Perimeter': all_perimeters,
     'Features': all_sides,
+    'Requested': all_wanted
 }
 
 # main heading
