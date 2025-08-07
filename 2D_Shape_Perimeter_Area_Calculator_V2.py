@@ -74,9 +74,7 @@ For each 2D shape enter:
 - A name to identify the shape
 - The type of shape (we have squares, rectangles, triangles and circles)
 - Whether you want either area or perimeter
-- The requested parts of the shape (sides, radius, height) 
-    (you can also put <x> if you don't have the requested feature)
-
+- The requested parts of the shape (sides, radius, height). 
 
 The program will record all user inputs and calculate the 
 perimeter and area (if possible, some cases will not have both available).
@@ -102,96 +100,88 @@ def shape_calc():
     if shape_type_chosen == "square" or shape_type_chosen == "rectangle":
 
         # ask user for the length of a side
-        first_side = num_check("Please enter the length of a side", 0, "x")
+        first_side = num_check("Please enter the length of a side", 0)
 
         # if rectangle, ask for another side
         if shape_type_chosen == "rectangle":
-            second_side = num_check("Please enter the length of the other side", 0, "x")
+            second_side = num_check("Please enter the length of the other side", 0)
 
         # otherwise, make second side same as first
         else:
             second_side = first_side
 
         # find perimeter and area
-        try:
-            perimeter = first_side + first_side + second_side + second_side
 
-            unrounded_area = first_side * second_side
-            area = round(unrounded_area, 2)
+        perimeter = first_side + first_side + second_side + second_side
 
-            # append results
-            all_shapes.append(shape_type_chosen)
-            all_areas.append(f"{area}{is_rounded}")
-            all_perimeters.append(f"{perimeter}")
-            all_wanted.append(want_perimeter_area)
-            all_sides.append(f"{first_side}s1, {second_side}s2")
-            return shape_type_chosen
+        unrounded_area = first_side * second_side
+        area = round(unrounded_area, 2)
 
-        # tell user that they have not given enough information for this calculation
-        except TypeError:
-            print("You have not given enough information to calculate either the perimeter or area. Please try again.")
-            return "fail"
+        # append results
+        all_shapes.append(shape_type_chosen)
+        all_areas.append(f"{area}{is_rounded}")
+        all_perimeters.append(f"{perimeter}")
+        all_wanted.append(want_perimeter_area)
+        all_sides.append(f"{first_side}s1, {second_side}s2")
+        return shape_type_chosen
+
 
     # circle finder
     elif shape_type_chosen == "circle":
-        circle_radius = num_check("Please enter the radius (distance between the middle of circle to the edge): ", 0, "x")
-        try:
-            # find perimeter and round to 2dp
-            perimeter_unrounded = (math.pi * 2) * circle_radius
-            perimeter = round(perimeter_unrounded, 2)
+        circle_radius = num_check("Please enter the radius (distance between the middle of circle to it's edge): ", 0)
 
-            # find area and round to 2dp
-            unrounded_area = circle_radius * (math.pi * math.pi)
-            area = round(unrounded_area, 2)
+        # find perimeter and round to 2dp
+        perimeter_unrounded = (math.pi * 2) * circle_radius
+        perimeter = round(perimeter_unrounded, 2)
 
-            # append results
-            all_shapes.append(shape_type_chosen)
-            all_areas.append(f"{area}{is_rounded}")
-            all_perimeters.append(f"{perimeter}{is_rounded}")
-            all_wanted.append(want_perimeter_area)
-            all_sides.append(f"{circle_radius}r")
-            return shape_type_chosen
+        # find area and round to 2dp
+        unrounded_area = circle_radius * (math.pi * math.pi)
+        area = round(unrounded_area, 2)
 
-        except ValueError:
-            print("You have not given enough information to calculate either the perimeter or area. Please try again.")
-            return "fail"
+        # append results
+        all_shapes.append(shape_type_chosen)
+        all_areas.append(f"{area}{is_rounded}")
+        all_perimeters.append(f"{perimeter}{is_rounded}")
+        all_wanted.append(want_perimeter_area)
+        all_sides.append(f"{circle_radius}r")
+        return shape_type_chosen
+
 
     # triangle finder
     else:
         if want_perimeter_area == "area":
             # ask user for the height if they want area
-            triangle_height = num_check("Please enter the height of the triangle: ", 0, "x")
+            triangle_height = num_check("Please enter the height of the triangle: ", 0)
+            # ask user for the base side length for area
+            triangle_base = num_check("Please enter the base of the triangle (bottom side): ", 0)
+            triangle_side_one = "X"
+            triangle_side_two = "X"
         else:
             triangle_height = ""
+            # ask user for the side lengths
+            triangle_base = num_check("Please enter a side of the triangle: ", 0)
+            triangle_side_one = num_check("Please enter another side of the triangle: ", 0)
+            triangle_side_two = num_check("Please enter the remaining side of the triangle: ", 0)
 
-        triangle_base = num_check("Please enter the base of the triangle (bottom side): ", 0, "x")
+        # if there is no height, cannot calculate area
+        if triangle_height == "":
+            area = "N/A"
+            # if there isn't enough information, perimeter is made N/A
+            perimeter = triangle_base + triangle_side_one + triangle_side_two
 
-        triangle_side_one = num_check("Please enter another side of the triangle: ", 0, "x")
-        triangle_side_two = num_check("Please enter the remaining side of the triangle: ", 0, "x")
-        try:
-            if triangle_side_one == "x":
-                perimeter = "N/A"
-            elif triangle_side_two == "x":
-                perimeter = "N/A"
-            else:
-                perimeter = triangle_base + triangle_side_one + triangle_side_two
-            if triangle_height == "":
-                area = "N/A"
-            else:
-                unrounded_area = 0.5 * triangle_base * triangle_height
-                area = round(unrounded_area, 2)
+        else:
+            unrounded_area = 0.5 * triangle_base * triangle_height
+            area = round(unrounded_area, 2)
+            # if there isn't enough information, perimeter is made N/A
+            perimeter = "N/A"
 
-            # append results
-            all_shapes.append(shape_type_chosen)
-            all_areas.append(f"{area}{is_rounded}")
-            all_perimeters.append(f"{perimeter}")
-            all_wanted.append(want_perimeter_area)
-            all_sides.append(f"{triangle_height}h, {triangle_base}s1, {triangle_side_one}s2, {triangle_side_two}s3")
-            return shape_type_chosen
-
-        except ValueError:
-            print("You have not given enough information to calculate either the perimeter or area. Please try again.")
-            return "fail"
+        # append results
+        all_shapes.append(shape_type_chosen)
+        all_areas.append(f"{area}{is_rounded}")
+        all_perimeters.append(f"{perimeter}")
+        all_wanted.append(want_perimeter_area)
+        all_sides.append(f"{triangle_height}h, {triangle_base}s1, {triangle_side_one}s2, {triangle_side_two}s3")
+        return shape_type_chosen
 
 
 # main routine
@@ -231,6 +221,7 @@ print()
 # loop so user can enter as many shapes as they wish
 while True:
     # get name of the shape
+    print()
     name = not_blank("Please enter the question name / something to identify your shape by, or enter 'complete' if you have finished: ")
     # if user is done calculating, break the loop
     if name == "complete":
