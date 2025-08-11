@@ -88,13 +88,14 @@ information and write the data to a dated text file.
 def shape_calc():
     """Gets a shape from the user and finds either the area or perimeter of that shape. """
 
-    is_rounded = " (2dp)"
-
     # ask user for shape
     shape_type_chosen = string_check("Please enter what shape you would like: ", shape_tuple, 4)
 
     # ask if user wants perimeter or area
     want_perimeter_area = string_check("Do you want the perimeter or the area? ", perimeter_area_tuple, 2)
+
+    # variable to reduce repeated code
+    answer_printing = f"The {want_perimeter_area} of your {shape_type_chosen} is "
 
     # find perimeter / area of square or rectangle
     if shape_type_chosen == "square" or shape_type_chosen == "rectangle":
@@ -110,41 +111,57 @@ def shape_calc():
         else:
             second_side = first_side
 
-        # find perimeter and area
+        if want_perimeter_area == "perimeter":
+            # find perimeter
+            perimeter = round(first_side + first_side + second_side + second_side, 2)
+            print(answer_printing, perimeter)
 
-        perimeter = first_side + first_side + second_side + second_side
+            # append results
+            all_shapes.append(shape_type_chosen)
+            all_areas_perimeters.append(f"{perimeter}")
+            all_wanted.append(want_perimeter_area)
+            all_sides.append(f"{first_side}s1, {second_side}s2")
+            return shape_type_chosen
+        else:
+            # find area
+            area = round(first_side * second_side, 2)
+            print(answer_printing, area)
 
-        unrounded_area = first_side * second_side
-        area = round(unrounded_area, 2)
-
-        # append results
-        all_shapes.append(shape_type_chosen)
-        all_areas.append(f"{area}{is_rounded}")
-        all_perimeters.append(f"{perimeter}")
-        all_wanted.append(want_perimeter_area)
-        all_sides.append(f"{first_side}s1, {second_side}s2")
-        return shape_type_chosen
+            # append results
+            all_shapes.append(shape_type_chosen)
+            all_areas_perimeters.append(f"{area}")
+            all_wanted.append(want_perimeter_area)
+            all_sides.append(f"{first_side}s1, {second_side}s2")
+            return shape_type_chosen
 
 
     # circle finder
     elif shape_type_chosen == "circle":
         circle_radius = num_check("Please enter the radius (distance between the middle of circle to it's edge): ", 0)
 
-        # find perimeter and round to 2dp
-        perimeter_unrounded = (math.pi * 2) * circle_radius
-        perimeter = round(perimeter_unrounded, 2)
+        if want_perimeter_area == "perimeter":
+            # find perimeter and round to 2dp
+            perimeter = round((math.pi * 2) * circle_radius, 2)
+            print(answer_printing, perimeter)
 
-        # find area and round to 2dp
-        unrounded_area = circle_radius * (math.pi * math.pi)
-        area = round(unrounded_area, 2)
+            # append results
+            all_shapes.append(shape_type_chosen)
+            all_areas_perimeters.append(f"{perimeter}")
+            all_wanted.append(want_perimeter_area)
+            all_sides.append(f"{circle_radius}r")
+            return shape_type_chosen
 
-        # append results
-        all_shapes.append(shape_type_chosen)
-        all_areas.append(f"{area}{is_rounded}")
-        all_perimeters.append(f"{perimeter}{is_rounded}")
-        all_wanted.append(want_perimeter_area)
-        all_sides.append(f"{circle_radius}r")
-        return shape_type_chosen
+        else:
+            # find area and round to 2dp
+            area = round(circle_radius * (math.pi * math.pi), 2)
+            print(answer_printing, area)
+
+            # append results
+            all_shapes.append(shape_type_chosen)
+            all_areas_perimeters.append(f"{area}")
+            all_wanted.append(want_perimeter_area)
+            all_sides.append(f"{circle_radius}r")
+            return shape_type_chosen
 
 
     # triangle finder
@@ -165,23 +182,29 @@ def shape_calc():
 
         # if there is no height, cannot calculate area
         if triangle_height == "":
-            area = "N/A"
             # if there isn't enough information, perimeter is made N/A
-            perimeter = triangle_base + triangle_side_one + triangle_side_two
+            perimeter = round(triangle_base + triangle_side_one + triangle_side_two, 2)
+            print(answer_printing, perimeter)
+
+            # append results
+            all_shapes.append(shape_type_chosen)
+            all_areas_perimeters.append(f"{perimeter}")
+            all_wanted.append(want_perimeter_area)
+            all_sides.append(f"{triangle_height}h, {triangle_base}s1, {triangle_side_one}s2, {triangle_side_two}s3")
+            return shape_type_chosen
 
         else:
             unrounded_area = 0.5 * triangle_base * triangle_height
             area = round(unrounded_area, 2)
             # if there isn't enough information, perimeter is made N/A
-            perimeter = "N/A"
+            print(answer_printing, area)
 
-        # append results
-        all_shapes.append(shape_type_chosen)
-        all_areas.append(f"{area}{is_rounded}")
-        all_perimeters.append(f"{perimeter}")
-        all_wanted.append(want_perimeter_area)
-        all_sides.append(f"{triangle_height}h, {triangle_base}s1, {triangle_side_one}s2, {triangle_side_two}s3")
-        return shape_type_chosen
+            # append results
+            all_shapes.append(shape_type_chosen)
+            all_areas_perimeters.append(f"{area}")
+            all_wanted.append(want_perimeter_area)
+            all_sides.append(f"{triangle_height}h, {triangle_base}s1, {triangle_side_one}s2, {triangle_side_two}s3")
+            return shape_type_chosen
 
 
 # main routine
@@ -193,8 +216,8 @@ perimeter_area_tuple = ("perimeter", "area")
 # pandas lists
 all_names = []
 all_shapes = []
-all_areas = []
-all_perimeters = []
+
+all_areas_perimeters = []
 all_sides = []
 all_wanted = []
 
@@ -202,8 +225,7 @@ all_wanted = []
 shapes_dict = {
     'Name': all_names,
     'Shape': all_shapes,
-    'Area': all_areas,
-    'Perimeter': all_perimeters,
+    'Results (2dp)': all_areas_perimeters,
     'Features': all_sides,
     'Requested': all_wanted
 }
