@@ -101,11 +101,11 @@ def shape_calc():
     if shape_type_chosen == "square" or shape_type_chosen == "rectangle":
 
         # ask user for the length of a side
-        first_side = num_check("Please enter the length of a side", 0)
+        first_side = num_check("Please enter the length of a side: ", 0)
 
         # if rectangle, ask for another side
         if shape_type_chosen == "rectangle":
-            second_side = num_check("Please enter the length of the other side", 0)
+            second_side = num_check("Please enter the length of the other side: ", 0)
 
         # otherwise, make second side same as first
         else:
@@ -166,45 +166,48 @@ def shape_calc():
 
     # triangle finder
     else:
+
+        # if the user wants the area, calc area
         if want_perimeter_area == "area":
-            # ask user for the height if they want area
+            # ask user for the height
             triangle_height = num_check("Please enter the height of the triangle: ", 0)
-            # ask user for the base side length for area
+            # ask user for the base side length
             triangle_base = num_check("Please enter the base of the triangle (bottom side): ", 0)
-            triangle_side_one = "X"
-            triangle_side_two = "X"
-        else:
-            triangle_height = ""
-            # ask user for the side lengths
-            triangle_base = num_check("Please enter a side of the triangle: ", 0)
-            triangle_side_one = num_check("Please enter another side of the triangle: ", 0)
-            triangle_side_two = num_check("Please enter the remaining side of the triangle: ", 0)
 
-        # if there is no height, cannot calculate area
-        if triangle_height == "":
-            # if there isn't enough information, perimeter is made N/A
-            perimeter = round(triangle_base + triangle_side_one + triangle_side_two, 2)
-            print(answer_printing, perimeter)
-
-            # append results
-            all_shapes.append(shape_type_chosen)
-            all_areas_perimeters.append(f"{perimeter}")
-            all_wanted.append(want_perimeter_area)
-            all_sides.append(f"{triangle_height}h, {triangle_base}s1, {triangle_side_one}s2, {triangle_side_two}s3")
-            return shape_type_chosen
-
-        else:
+            # find area
             unrounded_area = 0.5 * triangle_base * triangle_height
             area = round(unrounded_area, 2)
-            # if there isn't enough information, perimeter is made N/A
+
+            # print the answer
             print(answer_printing, area)
 
             # append results
             all_shapes.append(shape_type_chosen)
             all_areas_perimeters.append(f"{area}")
             all_wanted.append(want_perimeter_area)
-            all_sides.append(f"{triangle_height}h, {triangle_base}s1, {triangle_side_one}s2, {triangle_side_two}s3")
+            all_sides.append(f"{triangle_height}h, {triangle_base}b")
             return shape_type_chosen
+
+        # if the user wants the perimeter, calc perimeter
+        else:
+            # ask user for the side lengths
+            triangle_base = num_check("Please enter a side of the triangle: ", 0)
+            triangle_side_one = num_check("Please enter another side of the triangle: ", 0)
+            triangle_side_two = num_check("Please enter the remaining side of the triangle: ", 0)
+
+            # find perimeter
+            perimeter = round(triangle_base + triangle_side_one + triangle_side_two, 2)
+
+            # print the answer
+            print(answer_printing, perimeter)
+
+            # append results
+            all_shapes.append(shape_type_chosen)
+            all_areas_perimeters.append(f"{perimeter}")
+            all_wanted.append(want_perimeter_area)
+            all_sides.append(f"{triangle_base}s1, {triangle_side_one}s2, {triangle_side_two}s3")
+            return shape_type_chosen
+
 
 
 # main routine
@@ -225,8 +228,8 @@ all_wanted = []
 shapes_dict = {
     'Name': all_names,
     'Shape': all_shapes,
-    'Results (2dp)': all_areas_perimeters,
     'Features': all_sides,
+    'Results (2dp)': all_areas_perimeters,
     'Requested': all_wanted
 }
 
