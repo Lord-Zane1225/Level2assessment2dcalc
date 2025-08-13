@@ -14,11 +14,14 @@ def not_blank(question):
     """Checks that a user's response is not blank"""
 
     while True:
+        # ask question get response
         response = input(question)
 
+        # if response isn't blank, return it
         if response != "":
             return response
 
+        # otherwise, print error
         print("Sorry, this can't be blank. Please try again. \n")
 
 
