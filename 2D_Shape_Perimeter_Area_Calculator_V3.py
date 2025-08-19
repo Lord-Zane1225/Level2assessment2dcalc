@@ -105,6 +105,11 @@ def shape_calc():
     # variable to reduce repeated code
     answer_printing = f"The {want_perimeter_area} of your {shape_type_chosen} is "
 
+    # append name and chosen
+    all_shapes.append(shape_type_chosen)
+    all_wanted.append(want_perimeter_area)
+
+
     # find perimeter / area of square or rectangle
     if shape_type_chosen == "square" or shape_type_chosen == "rectangle":
 
@@ -118,6 +123,8 @@ def shape_calc():
         # otherwise, make second side same as first
         else:
             second_side = first_side
+        
+        all_sides.append(f"side = {first_side}, other side = {second_side}")
 
         if want_perimeter_area == "perimeter":
             # find perimeter
@@ -125,10 +132,7 @@ def shape_calc():
             print(answer_printing, perimeter)
 
             # append results
-            all_shapes.append(shape_type_chosen)
             all_areas_perimeters.append(f"{perimeter}")
-            all_wanted.append(want_perimeter_area)
-            all_sides.append(f"{first_side}s1, {second_side}s2")
             return shape_type_chosen
         else:
             # find area
@@ -136,16 +140,14 @@ def shape_calc():
             print(answer_printing, area)
 
             # append results
-            all_shapes.append(shape_type_chosen)
             all_areas_perimeters.append(f"{area}")
-            all_wanted.append(want_perimeter_area)
-            all_sides.append(f"{first_side}s1, {second_side}s2")
             return shape_type_chosen
 
 
     # circle finder
     elif shape_type_chosen == "circle":
         circle_radius = num_check("Please enter the radius (distance between the middle of circle to it's edge): ", 0)
+        all_sides.append(f"radius = {circle_radius}")
 
         if want_perimeter_area == "perimeter":
             # find perimeter and round to 2dp
@@ -153,10 +155,7 @@ def shape_calc():
             print(answer_printing, perimeter)
 
             # append results
-            all_shapes.append(shape_type_chosen)
             all_areas_perimeters.append(f"{perimeter}")
-            all_wanted.append(want_perimeter_area)
-            all_sides.append(f"{circle_radius}r")
             return shape_type_chosen
 
         else:
@@ -165,10 +164,7 @@ def shape_calc():
             print(answer_printing, area)
 
             # append results
-            all_shapes.append(shape_type_chosen)
             all_areas_perimeters.append(f"{area}")
-            all_wanted.append(want_perimeter_area)
-            all_sides.append(f"{circle_radius}r")
             return shape_type_chosen
 
 
@@ -190,10 +186,8 @@ def shape_calc():
             print(answer_printing, area)
 
             # append results
-            all_shapes.append(shape_type_chosen)
             all_areas_perimeters.append(f"{area}")
-            all_wanted.append(want_perimeter_area)
-            all_sides.append(f"{triangle_height}h, {triangle_base}b")
+            all_sides.append(f"height = {triangle_height}, base side = {triangle_base}")
             return shape_type_chosen
 
         # if the user wants the perimeter, calc perimeter
@@ -210,10 +204,8 @@ def shape_calc():
             print(answer_printing, perimeter)
 
             # append results
-            all_shapes.append(shape_type_chosen)
             all_areas_perimeters.append(f"{perimeter}")
-            all_wanted.append(want_perimeter_area)
-            all_sides.append(f"{triangle_base}s1, {triangle_side_one}s2, {triangle_side_two}s3")
+            all_sides.append(f"side 1 = {triangle_base}, side 2 = {triangle_side_one}, side 3 = {triangle_side_two}")
             return shape_type_chosen
 
 
@@ -236,7 +228,7 @@ all_wanted = []
 shapes_dict = {
     'Name': all_names,
     'Shape': all_shapes,
-    'Features': all_sides,
+    'Shape Features': all_sides,
     'Results (2dp)': all_areas_perimeters,
     'Requested': all_wanted
 }
