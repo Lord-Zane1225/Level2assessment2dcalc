@@ -238,7 +238,7 @@ print(make_statement("2D Shape Perimeter and Area Calculator", "--"))
 print()
 
 # ask user if they want to see the instructions
-want_instructions =                                                                                         string_check("Would you like to read the instructions? ", yes_no_tuple, 2)
+want_instructions = string_check("Would you like to read the instructions? ", yes_no_tuple, 2)
 if want_instructions == "yes":
     instructions()
 print()
@@ -247,9 +247,9 @@ print()
 while True:
     # get name of the shape
     print()
-    name = not_blank("Please enter the question name / something to identify your shape by, or enter 'complete' if you have finished: ")
+    name = input("Please enter the question name / something to identify your shape by, or press <enter> if you have finished: ")
     # if user is done calculating, break the loop
-    if name == "complete":
+    if name == "":
         break
 
     # get the perimeter / area of the shapes
